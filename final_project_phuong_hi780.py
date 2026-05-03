@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Apr 28 14:27:39 2026
-
-@author: lyphu
-"""
 
 import pyodbc
 import pandas as pd
@@ -18,17 +12,10 @@ df = pd.read_sql("SELECT * FROM cardio", conn)
 print(df.shape)
 print(df.head())
 
-
 X = df.drop(columns=["cardio", "id"], errors='ignore')
 y = df["cardio"]
-
-
 X = pd.get_dummies(X, drop_first=True)
-
-
 train_columns = X.columns
-
-
 from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42
@@ -41,16 +28,11 @@ from sklearn.ensemble import RandomForestClassifier
 rf_model = RandomForestClassifier(n_estimators=100, random_state=42)
 rf_model.fit(X_train, y_train)
 
-
 from sklearn.linear_model import LogisticRegression
-
 model = LogisticRegression()
 model.fit(X_train, y_train)
 
-
-
 from sklearn.metrics import accuracy_score, classification_report, roc_auc_score
-
 y_pred_lr = model.predict(X_test)
 print("Logistic Regression Accuracy:", accuracy_score(y_test, y_pred_lr))
 
@@ -63,15 +45,11 @@ print(classification_report(y_test, y_pred))
 
 import pandas as pd
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score
-
-
 y_pred_lr = model.predict(X_test)
 y_prob_lr = model.predict_proba(X_test)[:, 1]
 
-
 y_pred_rf = rf_model.predict(X_test)
 y_prob_rf = rf_model.predict_proba(X_test)[:, 1]
-
 
 results = pd.DataFrame({
     "Model": ["Logistic Regression", "Random Forest"],
@@ -103,7 +81,6 @@ import pandas as pd
 
 importance = pd.Series(rf_model.feature_importances_, index=X.columns)
 print(importance.sort_values(ascending=False))
-
 
 new_patient = pd.DataFrame([{
     "age_years": 55,
