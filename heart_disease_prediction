@@ -1,0 +1,21 @@
+SELECT
+    id,
+    age_years,
+    gender,
+    height,
+    weight,
+    TRY_CAST(ap_hi AS FLOAT) AS ap_hi,
+    TRY_CAST(ap_lo AS FLOAT) AS ap_lo,
+    cholesterol,
+    gluc,
+    smoke,
+    alco,
+    active,
+    TRY_CAST(bmi AS FLOAT) AS bmi,
+    bp_category_encoded,
+    cardio into dbo.cardio
+FROM dbo.cardio_data_processed
+WHERE 
+    TRY_CAST(ap_hi AS FLOAT) BETWEEN 80 AND 250
+    AND TRY_CAST(ap_lo AS FLOAT) BETWEEN 50 AND 150
+    AND TRY_CAST(bmi AS FLOAT) BETWEEN 10 AND 60
